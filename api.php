@@ -25,7 +25,7 @@ if(isset($_POST['oset'])){         //receiving data sent by ajax call
     $oset = 0;
 }
 
-$myArray['error'] = empty($_POST['oset']);
+$myArray['error'] = empty($_POST['oset']); //updating myArray : data to be sent to the frontend
 $myArray['vlimit'] = $vlimit;
 $myArray['oset'] = $oset;
 
@@ -40,5 +40,5 @@ while ($row = $result->fetch_array()){
     );
 }
 
-$myArray['content'] = $myRow;  //to ensure vallues are passed propely : console check
-echo json_encode($myArray);
+$myArray['content'] = $myRow;  
+echo json_encode($myArray);   //returning query+data to front end

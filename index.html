@@ -9,39 +9,57 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div id="content"></div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>
-        var oset = 1;
+        //jquery source code
+        var oset = 0;
         var iload = 7;
+        var holdload = false;
+        console.dir(window);
+        console.dir(document); 
         $(function(){
-            loadArt(iload);
+            loadArt(iload);   //loads 7 items at intial page load
         });
     
+    $(window).scroll(function(){
+        if($(window).scrollTop() >= $(document).height()-$(window).height()-100){
+            loadArt(1);
+        }
+    })
+
     function loadArt(a){
+        if(!holdload){
         //console.log('oset = '+ oset);
         var holder = {oset:oset, iload:a};
         //console.log(holder);
-        $.ajax({
+        holdload = true;
+        $.ajax({         //ajax call
             url:"api.php",
             type:"POST",
             data: holder,   //send request via ajax to be pick up by php in the api
-            dataType:"json",
-            success:function(data){
+            dataType:"json",    //data type set to json format
+            success:function(data){    //data returned for a successfull connection with the backend
                 console.log(data);
                 //console.log("test01");
                 for(var i = 0; i<data.content.length; i++){
-                    oset++;
+                    oset++;   //global var
                     //console.log("test02");
                     var item = data.content[i];
                     var html = '<div class="box">'+item.id+' '+item.content+' '+item.date+'</div>';
                     $('#content').append(html);     //jquery append html var to id content div
                 }
+                holdload = false;
+                if(data.content.length == 0){
+                    holdload = true;
+                }
             }
         })
+        }
     }
     </script>
 </body>
