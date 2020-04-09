@@ -1,34 +1,44 @@
 <!doctype html>
-//commit here
-//vs commit
 <head>
     <title>Infinite Scroll</title>
+    <style>
+        .box {
+            border: 1px solid rgb(7, 100, 100);
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <div id="container"></div>
+        <div id="content"></div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>
-        var oset = 0;
+        var oset = 1;
         var iload = 7;
-
         $(function(){
             loadArt(iload);
         });
     
     function loadArt(a){
+        //console.log('oset = '+ oset);
+        var holder = {oset:oset, iload:a};
+        //console.log(holder);
         $.ajax({
             url:"api.php",
             type:"POST",
-            data: {oset:oset, iload:a},   //send request via ajax to be pick up by php in the api
+            data: holder,   //send request via ajax to be pick up by php in the api
             dataType:"json",
             success:function(data){
                 console.log(data);
                 //console.log("test01");
                 for(var i = 0; i<data.content.length; i++){
                     oset++;
-                    var data = data.content[i];
+                    //console.log("test02");
+                    var item = data.content[i];
+                    var html = '<div class="box">'+item.id+' '+item.content+' '+item.date+'</div>';
+                    $('#content').append(html);     //jquery append html var to id content div
                 }
             }
         })

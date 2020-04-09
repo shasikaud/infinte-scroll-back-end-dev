@@ -17,7 +17,19 @@ if(empty($_POST['iload'])){         //receiving data sent by ajax call
     $vlimit = $_POST['iload'];
 }
 
-$query = "SELECT * FROM `bposts` ORDER BY id ASC LIMIT ".$vlimit." OFFSET 2";
+if(isset($_POST['oset'])){         //receiving data sent by ajax call
+    //$myArray['check02'] = 'fail';
+    $oset = $_POST['oset'];
+}else{
+    //$myArray['check01'] = 'pass';
+    $oset = 0;
+}
+
+$myArray['error'] = empty($_POST['oset']);
+$myArray['vlimit'] = $vlimit;
+$myArray['oset'] = $oset;
+
+$query = "SELECT * FROM `bposts` ORDER BY id ASC LIMIT ".$vlimit." OFFSET ".$oset."";
 $result = $link-> query($query);
 
 while ($row = $result->fetch_array()){
@@ -29,5 +41,4 @@ while ($row = $result->fetch_array()){
 }
 
 $myArray['content'] = $myRow;  //to ensure vallues are passed propely : console check
-$myArray['vlimit'] = $vlimit;
 echo json_encode($myArray);
