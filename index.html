@@ -26,6 +26,10 @@
             success:function(data){
                 console.log(data);
                 //console.log("test01");
+                for(var i = 0; i<data.content.length; i++){
+                    oset++;
+                    var data = data.content[i];
+                }
             }
         })
     }
